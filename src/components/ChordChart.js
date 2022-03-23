@@ -18,7 +18,7 @@ export default class ChordChart extends React.Component {
         canvas.height = 1400;
 
         const selfClass = this;
-        var interval = setInterval(function() {
+        setInterval(function() {
             selfClass.getLatestData();
         }, 500);
 	}
@@ -36,7 +36,7 @@ export default class ChordChart extends React.Component {
                     var measureNumber = 0;
                     for (const i in beats) {
                         const beat = beats[i];
-                        if (beat[1] == 1) {
+                        if (beat[1] === 1) {
                             measureNumber += 1;
                         }
                         songStructure.push({
@@ -95,8 +95,8 @@ export default class ChordChart extends React.Component {
                     var chords = "";
                     for (const index in beats) {
                         const beat = beats[index];
-                        if (beat.measureNumber == measureNumber) {
-                            if (beat.chord != undefined) {
+                        if (beat.measureNumber === measureNumber) {
+                            if (beat.chord !== undefined) {
                                 chords = chords + " " + beat.chord;
                             }
                         }
