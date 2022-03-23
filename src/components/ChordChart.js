@@ -9,6 +9,8 @@ export default class ChordChart extends React.Component {
             artist: "Nicholas Britell",
             album: "Succession□ Season 1 (HBO Original Series Soundtrack)",
             track: "Succession (Main Title Theme)",
+            prevTimestamp: null,
+            prevProgressMs: null,
         }
 	}
 
@@ -18,17 +20,20 @@ export default class ChordChart extends React.Component {
         canvas.height = 1400;
 
         const selfClass = this;
-        // setInterval(function() {
+        selfClass.getLatestData();
+        setInterval(function() {
+            clearInterval(selfClass.drawInterval);
             selfClass.getLatestData();
-        // }, 500);
+        }, 10000);
 	}
 
     getLatestData() {
+        const selfClass = this;
         this.props.spotify.getMyCurrentPlayingTrack().then((data) => {
+            console.log(data)
             const artist = data.item.artists[0].name;
             const album = data.item.album.name.replace(":","□");
             const track = data.item.name;
-            const currentTime = data.progress_ms / 1000;
             this.props.api.getChords(track,artist,album).then((chords) => {
                 this.props.api.getBeats(track,artist,album).then((beats) => {
 
@@ -58,7 +63,18 @@ export default class ChordChart extends React.Component {
                             }
                         }
                     }
-                    this.drawCanvas(songStructure, currentTime);
+
+                    selfClass.drawInterval = setInterval(() => {
+                        if (selfClass.state.prevTimestamp !== data.timestamp) {
+                            selfClass.setState({
+                                prevTimestamp: data.timestamp,
+                                prevProgressMs: data.progress_ms,
+                            });
+                        }
+                        const currentTime = (new Date().getTime() - selfClass.state.prevTimestamp + selfClass.state.prevProgressMs) / 1000;
+                        console.log(currentTime, new Date().getTime()/1000 - data.timestamp/1000, data.progress_ms/1000, data.timestamp/1000);
+                        selfClass.drawCanvas(songStructure, currentTime);
+                    }, 1000);
                 })
             })
         })
