@@ -22,7 +22,6 @@ export default class ChordChart extends React.Component {
         const selfClass = this;
         selfClass.getLatestData();
         setInterval(function() {
-            clearInterval(selfClass.drawInterval);
             selfClass.getLatestData();
         }, 10000);
 	}
@@ -64,6 +63,7 @@ export default class ChordChart extends React.Component {
                         }
                     }
 
+                    clearInterval(selfClass.drawInterval);
                     selfClass.drawInterval = setInterval(() => {
                         if (selfClass.state.prevTimestamp !== data.timestamp) {
                             selfClass.setState({
@@ -71,8 +71,7 @@ export default class ChordChart extends React.Component {
                                 prevProgressMs: data.progress_ms,
                             });
                         }
-                        const currentTime = (new Date().getTime() - selfClass.state.prevTimestamp + selfClass.state.prevProgressMs) / 1000;
-                        console.log(currentTime, new Date().getTime()/1000 - data.timestamp/1000, data.progress_ms/1000, data.timestamp/1000);
+                        const currentTime = (new Date().getTime() - selfClass.state.prevTimestamp) / 1000;
                         selfClass.drawCanvas(songStructure, currentTime);
                     }, 1000);
                 })
