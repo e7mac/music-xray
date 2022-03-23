@@ -4,7 +4,7 @@ export default class SpotifyService {
 	constructor() {
         this.spotifyApi = new SpotifyWebApi();
         console.log(this.spotifyApi)
-        this.spotifyApi.setAccessToken("BQDWcRzx4JGUUtK8cE5JKs_I8yCW_wZ_a09PiMK4sFDBDztCiWgDNL7eSL3ZaRnI2PMBf0GTvp3DFl6IwqU3fiuhTSoHm_sq_ywkWPvRJQKrLZD4G2fiTURoWOMcaDSgxgGvz_1GIOBv3t4pLZc");
+        this.spotifyApi.setAccessToken("BQCnqFvjDuhcfwNHm08J1mFgOwbejW0OD7Sj2IvfGHz-tCngNBj8hBpJnblydS_MquNS2nyPQxABBw4hxi8uwS_vCcCI9g-aj__zhk41xdL6Xs1fifp6TiN5Sz9u4NfXKaMbY-xwWuWGhR-4FKk");
 	}
 
     getMyCurrentPlayingTrack() {

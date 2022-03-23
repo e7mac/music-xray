@@ -18,9 +18,9 @@ export default class ChordChart extends React.Component {
         canvas.height = 1400;
 
         const selfClass = this;
-        setInterval(function() {
+        // setInterval(function() {
             selfClass.getLatestData();
-        }, 500);
+        // }, 500);
 	}
 
     getLatestData() {
