@@ -7,7 +7,8 @@ export default class ChordChart extends React.Component {
         this.audioRef = React.createRef();
         this.client_id = 'c7ceddc193814288b0559ca594aa0184'; // Your client id
         this.client_secret = 'b4b1a3a5438d49bda0fe9d95b1a16e3a'; // Your secret
-        this.redirect_uri = 'http://localhost:3000/'; // Your redirect uri
+        // this.redirect_uri = 'http://localhost:3000/'; // Your redirect uri
+        this.redirect_uri = 'https://github.com/e7mac/music-xray';
         this.scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
         this.state = {
         }
