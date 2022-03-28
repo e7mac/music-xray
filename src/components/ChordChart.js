@@ -12,72 +12,42 @@ export default class ChordChart extends React.Component {
             prevTimestamp: null,
             prevProgressMs: null,
         }
+        this.canvasClicked = this.canvasClicked.bind(this);
 	}
+
+    canvasClicked(event) {
+        const canvas = this.canvasRef.current;
+        const x = event.offsetX;
+        const y = event.offsetY;
+
+        const measureWidth = 100;
+        const measureHeight = 30;
+        const padding = 10;
+
+        const measureX = Math.floor(x / (measureWidth + padding));
+        const measureY = Math.floor(y / (measureHeight + padding));
+        const measureIndex = measureY * 4 + measureX;
+
+        this.props.player.seekToMeasure(measureIndex);
+    }
 
 	componentDidMount() {
         const canvas = this.canvasRef.current
         canvas.width = 440;
         canvas.height = 1400;
+        canvas.addEventListener('click', this.canvasClicked, false);
 
         const selfClass = this;
-        selfClass.getLatestData();
         setInterval(function() {
-            selfClass.getLatestData();
-        }, 10000);
-	}
-
-    getLatestData() {
-        const selfClass = this;
-        this.props.spotify.getMyCurrentPlayingTrack().then((data) => {
-            console.log(data)
-            const artist = data.item.artists[0].name;
-            const album = data.item.album.name.replace(":","□");
-            const track = data.item.name;
-            this.props.api.getChords(track,artist,album).then((chords) => {
-                this.props.api.getBeats(track,artist,album).then((beats) => {
-
-                    var songStructure = [];
-                    var measureNumber = 0;
-                    for (const i in beats) {
-                        const beat = beats[i];
-                        if (beat[1] === 1) {
-                            measureNumber += 1;
-                        }
-                        songStructure.push({
-                            timestamp: beat[0],
-                            beatNumber: beat[1],
-                            measureNumber: measureNumber,
-                        });
-                    }
-
-                    for (var i=0; i<chords.length ;i++) {
-                        const chord = chords[i];
-                        for (var j=0; j<songStructure.length - 1 ;j++) {
-                            const beat = songStructure[j];
-                            const nextBeat = songStructure[j+1];
-                            if (chord.timestamp >= beat.timestamp
-                            && chord.timestamp < nextBeat.timestamp) {
-                                // beat.chords.push(chord.chord);
-                                beat.chord = chord.chord;
-                            }
-                        }
-                    }
-
-                    clearInterval(selfClass.drawInterval);
-                    selfClass.drawInterval = setInterval(() => {
-                        if (selfClass.state.prevTimestamp !== data.timestamp) {
-                            selfClass.setState({
-                                prevTimestamp: data.timestamp,
-                                prevProgressMs: data.progress_ms,
-                            });
-                        }
-                        const currentTime = (new Date().getTime() - selfClass.state.prevTimestamp) / 1000;
-                        selfClass.drawCanvas(songStructure, currentTime);
-                    }, 1000);
-                })
+            selfClass.props.player.refreshCurrentTrack().then((blank) => {
+                const player = selfClass.props.player;
+                clearInterval(selfClass.drawInterval);
+                selfClass.drawInterval = setInterval(() => {
+                    selfClass.drawCanvas(player.songStructure, player.getProgress());
+                }, 100);
             })
-        })
-    }
+        }, 1000);
+	}
 
     drawCanvas(beats, currentTime) {
         var totalMeasures = beats[beats.length-1].measureNumber;
@@ -126,9 +96,6 @@ export default class ChordChart extends React.Component {
             }
         }
     }
-
-	componentDidUpdate() {
-	}
 
 	render() {
 		return (
