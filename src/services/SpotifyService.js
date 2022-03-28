@@ -14,7 +14,7 @@ export default class SpotifyService {
             'grant_type': 'authorization_code',
             'code': code,
             // 'redirect_uri': 'http://localhost:3000/',
-            'redirect_uri': 'https://github.com/e7mac/music-xray',
+            'redirect_uri': 'https://e7mac.github.io/music-xray',
         };
 
         var formBody = [];
