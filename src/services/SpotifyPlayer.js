@@ -1,5 +1,3 @@
-import SpotifyWebApi from 'spotify-web-api-js';
-
 export default class SpotifyPlayer {
 	constructor(spotify, api) {
         this.spotify = spotify;
@@ -22,7 +20,7 @@ export default class SpotifyPlayer {
         var time_ms = 0;
         for (var i=0;i<this.songStructure.length;i++) {
             const beat = this.songStructure[i];
-            if (beat.measureNumber == index) {
+            if (beat.measureNumber === index) {
                 time_ms = Math.floor(beat.timestamp * 1000);
                 i = this.songStructure.length;
             }
@@ -34,7 +32,6 @@ export default class SpotifyPlayer {
 
     getProgress() {
         if (this.is_playing) {
-            // return (new Date().getTime() - this.timestamp) / 1000;
             return (new Date().getTime() - this.request_timestamp + this.progress_ms) / 1000;
         } else {
             return this.pause_time;
