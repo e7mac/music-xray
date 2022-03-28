@@ -16,7 +16,6 @@ export default class ChordChart extends React.Component {
 	}
 
     canvasClicked(event) {
-        const canvas = this.canvasRef.current;
         const x = event.offsetX;
         const y = event.offsetY;
 
