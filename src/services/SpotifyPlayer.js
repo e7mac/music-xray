@@ -16,7 +16,6 @@ export default class SpotifyPlayer {
     }
 
     seekToMeasure(index) {
-
         var time_ms = 0;
         for (var i=0;i<this.songStructure.length;i++) {
             const beat = this.songStructure[i];

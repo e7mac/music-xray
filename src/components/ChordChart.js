@@ -5,13 +5,6 @@ export default class ChordChart extends React.Component {
 		super(props);
 		this.canvasRef = React.createRef();
         this.audioRef = React.createRef();
-        this.state = {
-            artist: "Nicholas Britell",
-            album: "Succession□ Season 1 (HBO Original Series Soundtrack)",
-            track: "Succession (Main Title Theme)",
-            prevTimestamp: null,
-            prevProgressMs: null,
-        }
         this.canvasClicked = this.canvasClicked.bind(this);
 	}
 
@@ -85,7 +78,7 @@ export default class ChordChart extends React.Component {
                             }
                         }
                     }
-                    const measureColor = currentMeasure < measureNumber ? 'yellow' : 'red';
+                    const measureColor = measureNumber < currentMeasure ? 'orange' : 'yellow';
                     ctx.fillStyle = measureColor;
                     ctx.fillRect(x, y, measureWidth, measureHeight);
                     ctx.fillStyle = '#000000';
