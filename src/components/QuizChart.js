@@ -42,6 +42,8 @@ const QuizChart = ({ player }) => {
         };
     }, [player]);
 
+    const rows = Math.ceil(canvasData.length / 16);
+    
     useEffect(() => {
         if (canvasData.length > 0 && randomRowIndex === -1) {
             const randomRow = Math.floor(Math.random() * rows);
@@ -51,8 +53,6 @@ const QuizChart = ({ player }) => {
             player.setLoopTime(firstBeatOfRow.timestamp, lastBeatOfRow.timestamp)
         }
     }, [canvasData, randomRowIndex, player, rows]);
-
-    const rows = Math.ceil(canvasData.length / 16);
 
     return (
         <div className="quiz-chart">
