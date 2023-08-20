@@ -50,7 +50,7 @@ const QuizChart = ({ player }) => {
             const lastBeatOfRow = canvasData[randomRow*16 + 16 - 1];
             player.setLoopTime(firstBeatOfRow.timestamp, lastBeatOfRow.timestamp)
         }
-    }, [canvasData, randomRowIndex, player]);
+    }, [canvasData, randomRowIndex, player, rows]);
 
     const rows = Math.ceil(canvasData.length / 16);
 
