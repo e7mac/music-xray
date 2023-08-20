@@ -26,7 +26,7 @@ const ChordChart = ({ player }) => {
 
         let drawInterval;
 
-        player.refreshCurrentTrack().then(() => {
+        player.songStructure().then(() => {
             drawInterval = setInterval(() => {
                 drawCanvas(player.songStructure, player.getCurrentTime());
             }, 100);

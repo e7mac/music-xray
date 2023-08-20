@@ -37,7 +37,7 @@ export default class SpotifyPlayer {
         }
     }
 
-    refreshCurrentTrack() {
+    songStructure() {
         const selfClass = this;
         return this.spotify.getMyCurrentPlayingTrack().then((data) => {
             const artist = data.item.artists[0].name;

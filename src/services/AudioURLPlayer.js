@@ -8,7 +8,7 @@ class AudioURLPlayer {
         console.log(url);
         this.audio = new Audio(url);
         this.isPlaying = false;
-        this.songStructure = [];
+        this.cachedSongStructurePromise = null;
     }
 
     playPause() {
@@ -38,11 +38,21 @@ class AudioURLPlayer {
         return this.audio.duration;
     }
 
-    async refreshCurrentTrack() {
-        const songStructure = await this.api.getSongStructure(this.track, this.artist, this.album);
-        this.songStructure = songStructure;
-        return this;
-    }
-}
+    async songStructure() {
+        if (this.cachedSongStructurePromise) {
+            return this.cachedSongStructurePromise;
+        }
+
+        this.cachedSongStructurePromise = this.api.getSongStructure(this.track, this.artist, this.album)
+            .then((songStructure) => {
+                this.songStructure = songStructure;
+                return this;
+            })
+            .finally(() => {
+                this.cachedSongStructurePromise = null;
+            });
+
+        return this.cachedSongStructurePromise;
+    }}
 
 export default AudioURLPlayer;
