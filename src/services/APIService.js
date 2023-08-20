@@ -30,6 +30,45 @@ export default class APIService {
 			.catch(error => console.log("error: " + error));
 	}
 
+	getSongStructure(track, artist, album) {
+		return new Promise((resolve, reject) => {
+			const selfClass = this;
+			this.getChords(track, artist, album)
+				.then((chords) => {
+					selfClass.getBeats(track, artist, album)
+						.then((beats) => {
+							var songStructure = [];
+							var measureNumber = 0;
+							var currentChord = "";
+							const threshold = 0.0;
+							for (const i in beats) {
+								const beat = beats[i];
+								if (chords.length > 0) {
+									if (beat[0] - threshold > chords[0]["timestamp"]) {
+										currentChord = chords[0]["chord"];
+										chords.shift();
+									} else {
+										currentChord = "";
+									}
+								}
+								if (beat[1] === 1) {
+									measureNumber += 1;
+								}
+								songStructure.push({
+									timestamp: beat[0],
+									beatNumber: beat[1],
+									chord: currentChord,
+									measureNumber: measureNumber,
+								});
+							}
+							console.log(songStructure)
+							resolve(songStructure);
+						})
+				})
+				.catch(error => console.log("error: " + error));
+		});
+	}
+	
     getAudioURL(track, artist, album) {
         return `${this.baseUrl}${this.urlConstruct(track, artist, album)}.mp3`
     }

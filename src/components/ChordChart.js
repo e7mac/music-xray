@@ -4,7 +4,6 @@ export default class ChordChart extends React.Component {
 	constructor(props) {
 		super(props);
 		this.canvasRef = React.createRef();
-        this.audioRef = React.createRef();
         this.canvasClicked = this.canvasClicked.bind(this);
 	}
 
@@ -18,7 +17,7 @@ export default class ChordChart extends React.Component {
 
         const measureX = Math.floor(x / (measureWidth + padding));
         const measureY = Math.floor(y / (measureHeight + padding));
-        const measureIndex = measureY * 4 + measureX;
+        const measureIndex = measureY * 4 + measureX + 1 // 1-index;
 
         this.props.player.seekToMeasure(measureIndex);
     }
@@ -35,7 +34,7 @@ export default class ChordChart extends React.Component {
                 const player = selfClass.props.player;
                 clearInterval(selfClass.drawInterval);
                 selfClass.drawInterval = setInterval(() => {
-                    selfClass.drawCanvas(player.songStructure, player.getProgress());
+                    selfClass.drawCanvas(player.songStructure, player.getCurrentTime());
                 }, 100);
             })
         }, 1000);
@@ -78,7 +77,13 @@ export default class ChordChart extends React.Component {
                             }
                         }
                     }
-                    const measureColor = measureNumber <= currentMeasure ? 'orange' : 'yellow';
+                    var measureColor = 'yellow';
+                    if (measureNumber == currentMeasure) {
+                        measureColor = 'red';
+                    }
+                    if (measureNumber < currentMeasure) {
+                        measureColor = 'orange';
+                    }
                     ctx.fillStyle = measureColor;
                     ctx.fillRect(x, y, measureWidth, measureHeight);
                     ctx.fillStyle = '#000000';

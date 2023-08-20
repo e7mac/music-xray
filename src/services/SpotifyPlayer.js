@@ -7,7 +7,7 @@ export default class SpotifyPlayer {
     playPause() {
         if (this.is_playing) {
             this.spotify.pause();
-            this.pause_time = this.getProgress();
+            this.pause_time = this.getCurrentTime();
             this.is_playing = false;
         } else {
             this.spotify.play();
@@ -29,7 +29,7 @@ export default class SpotifyPlayer {
         this.spotify.seek(time_ms);
     }
 
-    getProgress() {
+    getCurrentTime() {
         if (this.is_playing) {
             return (new Date().getTime() - this.request_timestamp + this.progress_ms) / 1000;
         } else {

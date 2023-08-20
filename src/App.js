@@ -2,6 +2,7 @@ import './App.css';
 import APIService from './services/APIService';
 import SpotifyService from './services/SpotifyService';
 import ChordChart from './components/ChordChart';
+import QuizChart from './components/QuizChart';
 import Login from './components/Login';
 import SpotifyPlayerControl from './components/SpotifyPlayerControl';
 import SpotifyPlayer from './services/SpotifyPlayer';
@@ -11,7 +12,7 @@ import AudioURLPlayer from './services/AudioURLPlayer';
 function App() {
 
   const queryParams = new URLSearchParams(window.location.search);
-  const mode = queryParams.get("direct");
+  const mode = queryParams.get("mode");
   console.log(mode);
 
 
@@ -31,7 +32,12 @@ function App() {
       spotifyService = new SpotifyService(token);
     }
     spotifyPlayer = new SpotifyPlayer(spotifyService, apiService)
-  } else {
+  } else if (mode==="quiz") {
+    artist = "Thomas Bergersen"
+    album = "Sun"
+    track = "Colors of Love"
+    audioPlayer = new AudioURLPlayer(apiService, track, artist, album)
+  } else if (mode==="direct") {
     // direct mode
     artist = "Thomas Bergersen"
     album = "Sun"
@@ -55,7 +61,9 @@ function App() {
                 player={spotifyPlayer}
               />
             </>
-        : <>
+        : mode === "direct"
+          ?
+            <>
               <AudioPlayerControl
                 player={audioPlayer}
               />
@@ -67,7 +75,19 @@ function App() {
                 track={track}
               />
             </>
-
+          : // mode quiz            
+          <>
+            <AudioPlayerControl
+              player={audioPlayer}
+            />
+            <QuizChart
+              api={apiService}
+              player={audioPlayer}
+              artist={artist}
+              album={album}
+              track={track}
+            />
+        </>
       }
       </header>
     </div>

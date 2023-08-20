@@ -10,13 +10,12 @@ export default class AudioURLPlayer {
 	}
 
     playPause() {
-        if (this.is_playing) {
-            console.log("PLAY");
+        if (!this.isPlaying) {
             this.audio.play();
-            this.is_playing = false;
+            this.isPlaying = true;
         } else {
             this.audio.pause();
-            this.is_playing = true;
+            this.isPlaying = false;
         }
     }
 
@@ -33,8 +32,12 @@ export default class AudioURLPlayer {
         this.audio.currentTime = time_ms / 1000;
     }
 
-    getProgress() {
+    getCurrentTime() {
         return this.audio.currentTime;
+    }
+
+    getDuration() {
+        return this.audio.duration;
     }
 
     refreshCurrentTrack() {
@@ -42,37 +45,9 @@ export default class AudioURLPlayer {
         const track = this.track
         const artist = this.artist
         const album = this.album
-        return this.api.getChords(track, artist, album).then((chords) => {
-                selfClass.chords = chords;
-                selfClass.api.getBeats(track,artist,album).then((beats) => {
-                    selfClass.beats = beats;
-                    var songStructure = [];
-                    var measureNumber = 0;
-                    var currentChord = "";
-                    const threshold = 0.0;
-                    for (const i in beats) {
-                        const beat = beats[i];
-                        if (chords.length > 0) {
-                            if (beat[0] - threshold > chords[0]["timestamp"]) {
-                                currentChord = chords[0]["chord"];
-                                chords.shift();
-                            } else {
-                                currentChord = ""
-                            }
-                        }
-                        if (beat[1] === 1) {
-                            measureNumber += 1;
-                        }
-                        songStructure.push({
-                            timestamp: beat[0],
-                            beatNumber: beat[1],
-                            chord: currentChord,
-                            measureNumber: measureNumber,
-                        });
-                    }
-                    selfClass.songStructure = songStructure;
-                    return selfClass
-                })
+        return this.api.getSongStructure(track, artist, album).then((songStructure) => {
+            selfClass.songStructure = songStructure;
+            return selfClass;            
         })
     }
 }
