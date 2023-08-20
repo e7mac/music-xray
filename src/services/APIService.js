@@ -61,7 +61,6 @@ export default class APIService {
 									measureNumber: measureNumber,
 								});
 							}
-							console.log(songStructure)
 							resolve(songStructure);
 						})
 				})
