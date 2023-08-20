@@ -31,7 +31,7 @@ const QuizChart = ({ player }) => {
                 // console.log(currentTime, currentMeasure);
                 return prevCanvasData.map((beat, index) => {
                     const prevBeat = prevCanvasData[index - 1];
-                    const shouldDisplayChord = (beat.chord !== prevBeat?.chord) || (index%16 == 0);
+                    const shouldDisplayChord = (beat.chord !== prevBeat?.chord) || (index%16 === 0);
                     return { ...beat, currentMeasure, shouldDisplayChord };
                 });
             });
@@ -50,9 +50,7 @@ const QuizChart = ({ player }) => {
             const lastBeatOfRow = canvasData[randomRow*16 + 16 - 1];
             player.setLoopTime(firstBeatOfRow.timestamp, lastBeatOfRow.timestamp)
         }
-    }, [canvasData, randomRowIndex]);
-
-    const rows = Math.ceil(canvasData.length / 16);
+    }, [canvasData, randomRowIndex, player]);
 
     return (
         <div className="quiz-chart">
