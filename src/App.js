@@ -15,7 +15,6 @@ function App() {
   const mode = queryParams.get("mode");
   console.log(mode);
 
-
   const token = queryParams.get("code");
 
   var apiService = new APIService();
