@@ -35,7 +35,7 @@ export default class ChordChart extends React.Component {
             selfClass.drawInterval = setInterval(() => {
                 selfClass.drawCanvas(player.songStructure, player.getCurrentTime());
             }, 100);
-        });
+        })
 	}
 
     drawCanvas(beats, currentTime) {

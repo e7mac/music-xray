@@ -1,51 +1,55 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class AudioPlayerControl extends React.Component {
-	constructor(props) {
-		super(props);
-		this.buttonClicked = this.buttonClicked.bind(this);
-		this.sliderRef = React.createRef();
-		this.state = {
+class AudioPlayerControl extends Component {
+    constructor(props) {
+        super(props);
+        this.sliderRef = React.createRef();
+        this.state = {
             isPlaying: false,
             currentTime: 0,
             duration: 0,
-        };		
-	}
+        };
+    }
 
-	buttonClicked() {
-		this.props.player.playPause()
-		this.setState({
-			isPlaying: this.props.player.isPlaying
-		});
-	}
+    buttonClicked = () => {
+        this.props.player.playPause();
+        this.setState((prevState) => ({
+            isPlaying: !prevState.isPlaying,
+        }));
+    }
 
-	componentDidMount() {
-        const selfClass = this;
-        setInterval(function() {
-			selfClass.setState({
-				currentTime: selfClass.props.player.getCurrentTime(),
-				duration: selfClass.props.player.getDuration(),
-			});
+    componentDidMount() {
+        this.updateTimeInterval = setInterval(() => {
+            const currentTime = this.props.player.getCurrentTime();
+            const duration = this.props.player.getDuration();
+            this.setState({ currentTime, duration });
         }, 1000);
-	}
+    }
 
-	render() {
-		return (
+    componentWillUnmount() {
+        clearInterval(this.updateTimeInterval);
+    }
+
+    render() {
+        const { isPlaying, currentTime, duration } = this.state;
+        return (
             <div>
                 <button type="button" onClick={this.buttonClicked}>
-					{this.state.isPlaying ? 'Pause' : 'Play'}
-				</button>
-				<progress
+                    {isPlaying ? 'Pause' : 'Play'}
+                </button>
+                <progress
                     min="0"
                     max="100"
-                    value={(this.state.currentTime / this.state.duration) * 100 || 0}
+                    value={(currentTime / duration) * 100 || 0}
                     ref={this.sliderRef}
                 />
                 <span className="time-label">
-                    {new Date(this.state.currentTime * 1000).toISOString().substr(14, 5)} /{' '}
-                    {new Date(this.state.duration * 1000).toISOString().substr(14, 5)}
-                </span>				
+                    {new Date(currentTime * 1000).toISOString().substr(14, 5)} /{' '}
+                    {new Date(duration * 1000).toISOString().substr(14, 5)}
+                </span>
             </div>
-		);
-	}
+        );
+    }
 }
+
+export default AudioPlayerControl;

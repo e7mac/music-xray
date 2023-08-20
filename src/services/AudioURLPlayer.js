@@ -1,13 +1,15 @@
-export default class AudioURLPlayer {
-	constructor(api, track, artist, album) {
+class AudioURLPlayer {
+    constructor(api, track, artist, album) {
         this.api = api;
-        this.artist = artist
-        this.track = track
-        this.album = album
-        const url = api.getAudioURL(track, artist, album)
-        console.log(url)
+        this.artist = artist;
+        this.track = track;
+        this.album = album;
+        const url = api.getAudioURL(track, artist, album);
+        console.log(url);
         this.audio = new Audio(url);
-	}
+        this.isPlaying = false;
+        this.songStructure = [];
+    }
 
     playPause() {
         if (!this.isPlaying) {
@@ -20,16 +22,12 @@ export default class AudioURLPlayer {
     }
 
     seekToMeasure(index) {
-        var time_ms = 0;
-        for (var i=0;i<this.songStructure.length;i++) {
-            const beat = this.songStructure[i];
-            if (beat.measureNumber === index) {
-                time_ms = Math.floor(beat.timestamp * 1000);
-                i = this.songStructure.length;
-            }
+        const beat = this.songStructure.find((beat) => beat.measureNumber === index);
+        if (beat) {
+            const time_ms = Math.floor(beat.timestamp * 1000);
+            console.log(time_ms);
+            this.audio.currentTime = time_ms / 1000;
         }
-        console.log(time_ms);
-        this.audio.currentTime = time_ms / 1000;
     }
 
     getCurrentTime() {
@@ -40,14 +38,11 @@ export default class AudioURLPlayer {
         return this.audio.duration;
     }
 
-    refreshCurrentTrack() {
-        const selfClass = this;
-        const track = this.track
-        const artist = this.artist
-        const album = this.album
-        return this.api.getSongStructure(track, artist, album).then((songStructure) => {
-            selfClass.songStructure = songStructure;
-            return selfClass;            
-        })
+    async refreshCurrentTrack() {
+        const songStructure = await this.api.getSongStructure(this.track, this.artist, this.album);
+        this.songStructure = songStructure;
+        return this;
     }
 }
+
+export default AudioURLPlayer;
