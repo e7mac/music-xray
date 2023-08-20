@@ -48,7 +48,7 @@ function App() {
     <div className="App">
       <header className="App-header">
       {
-        mode === null
+        mode === "spotify"
         ? token === null
           ? <Login/>
           : <>
