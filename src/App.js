@@ -26,7 +26,7 @@ function App() {
   var album = null;
   var track = null;
 
-  if (mode===null) { // spotify mode
+  if (mode==="spotify") { // spotify mode
     if (token !== undefined) {
       spotifyService = new SpotifyService(token);
     }
@@ -36,7 +36,7 @@ function App() {
     album = "Sun"
     track = "Colors of Love"
     audioPlayer = new AudioURLPlayer(apiService, track, artist, album)
-  } else if (mode==="direct") {
+  } else {
     // direct mode
     artist = "Thomas Bergersen"
     album = "Sun"
