@@ -9,6 +9,8 @@ class AudioURLPlayer {
         this.audio = new Audio(url);
         this.isPlaying = false;
         this.cachedSongStructurePromise = null;
+        this.startTime = null; // Added property for startTime
+        this.endTime = null; // Added property for endTime
     }
 
     playPause() {
@@ -28,6 +30,17 @@ class AudioURLPlayer {
             console.log(time_ms);
             this.audio.currentTime = time_ms / 1000;
         }
+    }
+
+    setLoopTime(startTime, endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.audio.currentTime = startTime;
+        this.audio.addEventListener('timeupdate', () => {
+            if (this.audio.currentTime >= endTime) {
+                this.audio.currentTime = startTime;
+            }
+        });
     }
 
     getCurrentTime() {
@@ -53,6 +66,7 @@ class AudioURLPlayer {
             });
 
         return this.cachedSongStructurePromise;
-    }}
+    }
+}
 
 export default AudioURLPlayer;
