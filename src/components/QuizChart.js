@@ -52,6 +52,8 @@ const QuizChart = ({ player }) => {
         }
     }, [canvasData, randomRowIndex, player]);
 
+    const rows = Math.ceil(canvasData.length / 16);
+
     return (
         <div className="quiz-chart">
             <div className="row" key={randomRowIndex}>
