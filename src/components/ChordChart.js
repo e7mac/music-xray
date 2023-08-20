@@ -1,90 +1,76 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ChordChart = ({ player }) => {
-    const canvasRef = useRef(null);
+    const [canvasData, setCanvasData] = useState([]);
 
-    const canvasClicked = (event) => {
-        const x = event.offsetX;
-        const y = event.offsetY;
-
-        const measureWidth = 100;
-        const measureHeight = 30;
-        const padding = 10;
-
-        const measureX = Math.floor(x / (measureWidth + padding));
-        const measureY = Math.floor(y / (measureHeight + padding));
-        const measureIndex = measureY * 4 + measureX + 1; // 1-index
-
+    const beatClicked = (index) => {
+        const measureIndex = Math.floor(index / 4) + 1;
         player.seekToMeasure(measureIndex);
     };
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        canvas.width = 440;
-        canvas.height = 1400;
-        canvas.addEventListener('click', canvasClicked, false);
-
-        let drawInterval;
-
-        player.songStructure().then(() => {
-            drawInterval = setInterval(() => {
-                drawCanvas(player.songStructure, player.getCurrentTime());
-            }, 100);
+        player.songStructure().then(beats => {
+            setCanvasData(beats);
         });
+
+        const drawInterval = setInterval(() => {
+            setCanvasData(prevCanvasData => {
+                const currentTime = player.getCurrentTime();
+                const currentMeasure = getCurrentMeasure(prevCanvasData, currentTime);
+                return prevCanvasData.map((beat, index) => {
+                    const prevBeat = prevCanvasData[index - 1];
+                    const shouldDisplayChord = beat.chord !== prevBeat?.chord; // Check if chord is different from previous beat
+                    return { ...beat, currentMeasure, shouldDisplayChord };
+                });
+            });
+        }, 100);
 
         return () => {
             clearInterval(drawInterval);
-            canvas.removeEventListener('click', canvasClicked, false);
         };
     }, [player]);
 
-    const drawCanvas = (beats, currentTime) => {
-        const totalMeasures = beats[beats.length - 1].measureNumber;
-
-        const canvas = canvasRef.current;
-
-        const measuresPerRow = 4;
-        const rows = Math.ceil(totalMeasures / measuresPerRow);
-
-        const measureWidth = 100;
-        const measureHeight = 30;
-        const padding = 10;
-
-        const ctx = canvas.getContext('2d');
-
+    const getCurrentMeasure = (beats, currentTime) => {
         let currentMeasure = 0;
         for (const beat of beats) {
             if (beat.timestamp < currentTime) {
                 currentMeasure = beat.measureNumber;
             }
         }
-
-        for (let i = 0; i < measuresPerRow; i++) {
-            for (let j = 0; j < rows; j++) {
-                const measureNumber = i + j * measuresPerRow + 1; // index-from-1
-                if (measureNumber < totalMeasures) {
-                    const x = i * (measureWidth + padding);
-                    const y = j * (measureHeight + padding);
-                    let chords = '';
-                    for (const beat of beats) {
-                        if (beat.measureNumber === measureNumber && beat.chord !== undefined) {
-                            chords = chords + ' ' + beat.chord;
-                        }
-                    }
-                    const measureColor = measureNumber === currentMeasure ? 'red' : measureNumber < currentMeasure ? 'orange' : 'yellow';
-                    ctx.fillStyle = measureColor;
-                    ctx.fillRect(x, y, measureWidth, measureHeight);
-                    ctx.fillStyle = '#000000';
-                    ctx.font = '20px Impact';
-                    ctx.fillText(chords, x, y + 20);
-                }
-            }
-        }
+        return currentMeasure;
     };
 
+    const rows = Math.ceil(canvasData.length / 16);
+
     return (
-        <div>
-            <canvas ref={canvasRef}></canvas>
+        <div className="quiz-chart">
+            {Array.from({ length: rows }).map((_, rowIndex) => (
+                <div className="row" key={rowIndex}>
+                    {canvasData.slice(rowIndex * 16, (rowIndex + 1) * 16).map((beat, index) => (
+                        <div
+                            onClick={() => beatClicked(rowIndex * 16 + index)}
+                            key={index}
+                            className="beat"
+                            style={{
+                                width: '80px',
+                                height: '50px',
+                                color: 'black',
+                                fontSize: 15,
+                                backgroundColor:
+                                    beat.measureNumber === beat.currentMeasure
+                                        ? 'red'
+                                        : beat.measureNumber < beat.currentMeasure
+                                        ? 'orange'
+                                        : 'yellow',
+                                display: 'inline-block',
+                                margin: '1px',
+                            }}
+                        >
+                            {beat.shouldDisplayChord ? beat.chord : '.'}
+                        </div>
+                    ))}
+                </div>
+            ))}
         </div>
     );
 };

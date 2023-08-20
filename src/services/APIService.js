@@ -39,7 +39,7 @@ export default class APIService {
                         currentChord = chords[0]["chord"];
                         chords.shift();
                     } else {
-                        currentChord = "";
+                        // currentChord = "";
                     }
                 }
                 if (beat[1] === 1) {

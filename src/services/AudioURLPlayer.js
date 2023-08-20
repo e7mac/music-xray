@@ -46,7 +46,7 @@ class AudioURLPlayer {
         this.cachedSongStructurePromise = this.api.getSongStructure(this.track, this.artist, this.album)
             .then((songStructure) => {
                 this.songStructure = songStructure;
-                return this;
+                return songStructure;
             })
             .finally(() => {
                 this.cachedSongStructurePromise = null;
