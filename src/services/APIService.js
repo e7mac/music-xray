@@ -21,6 +21,15 @@ export default class APIService {
 			.catch(error => console.log("error: " + error));
 	}
 
+	getChart(track, artist, album) {
+        const path = `${this.urlConstruct(track, artist, album)}-chart.json`
+		return this.apiCall(path)
+			.then(response => {
+				return response
+			})
+			.catch(error => console.log("error: " + error));
+	}
+
     getAudioURL(track, artist, album) {
         return `${this.baseUrl}${this.urlConstruct(track, artist, album)}.mp3`
     }

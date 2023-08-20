@@ -65,7 +65,7 @@ export default class ChordChart extends React.Component {
 
         for (var i=0; i<measuresPerRow; i++) {
             for (var j=0; j<rows; j++) {
-                const measureNumber = i + j*measuresPerRow;
+                const measureNumber = i + j*measuresPerRow + 1; //index-from-1
                 if (measureNumber < totalMeasures) {
                     const x = i*(measureWidth+padding);
                     const y = j*(measureHeight+padding);
@@ -78,7 +78,7 @@ export default class ChordChart extends React.Component {
                             }
                         }
                     }
-                    const measureColor = measureNumber < currentMeasure ? 'orange' : 'yellow';
+                    const measureColor = measureNumber <= currentMeasure ? 'orange' : 'yellow';
                     ctx.fillStyle = measureColor;
                     ctx.fillRect(x, y, measureWidth, measureHeight);
                     ctx.fillStyle = '#000000';

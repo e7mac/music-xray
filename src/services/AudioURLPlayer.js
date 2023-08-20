@@ -11,6 +11,7 @@ export default class AudioURLPlayer {
 
     playPause() {
         if (this.is_playing) {
+            console.log("PLAY");
             this.audio.play();
             this.is_playing = false;
         } else {
@@ -47,29 +48,27 @@ export default class AudioURLPlayer {
                     selfClass.beats = beats;
                     var songStructure = [];
                     var measureNumber = 0;
+                    var currentChord = "";
+                    const threshold = 0.0;
                     for (const i in beats) {
                         const beat = beats[i];
+                        if (chords.length > 0) {
+                            if (beat[0] - threshold > chords[0]["timestamp"]) {
+                                currentChord = chords[0]["chord"];
+                                chords.shift();
+                            } else {
+                                currentChord = ""
+                            }
+                        }
                         if (beat[1] === 1) {
                             measureNumber += 1;
                         }
                         songStructure.push({
                             timestamp: beat[0],
                             beatNumber: beat[1],
+                            chord: currentChord,
                             measureNumber: measureNumber,
                         });
-                    }
-
-                    for (var i=0; i<chords.length ;i++) {
-                        const chord = chords[i];
-                        for (var j=0; j<songStructure.length - 1 ;j++) {
-                            const beat = songStructure[j];
-                            const nextBeat = songStructure[j+1];
-                            if (chord.timestamp - beat.timestamp >= 0.1
-                            && chord.timestamp < nextBeat.timestamp) {
-                                // beat.chords.push(chord.chord);
-                                beat.chord = chord.chord;
-                            }
-                        }
                     }
                     selfClass.songStructure = songStructure;
                     return selfClass

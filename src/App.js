@@ -33,9 +33,9 @@ function App() {
     spotifyPlayer = new SpotifyPlayer(spotifyService, apiService)
   } else {
     // direct mode
-    artist = "Nicholas Britell"
-    album = "Succession□ Season 1 (HBO Original Series Soundtrack)"
-    track = "Succession (Main Title Theme)"
+    artist = "Thomas Bergersen"
+    album = "Sun"
+    track = "Colors of Love"
     audioPlayer = new AudioURLPlayer(apiService, track, artist, album)
   }
 
