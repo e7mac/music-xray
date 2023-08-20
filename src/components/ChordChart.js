@@ -29,15 +29,13 @@ export default class ChordChart extends React.Component {
         canvas.addEventListener('click', this.canvasClicked, false);
 
         const selfClass = this;
-        setInterval(function() {
-            selfClass.props.player.refreshCurrentTrack().then((blank) => {
-                const player = selfClass.props.player;
-                clearInterval(selfClass.drawInterval);
-                selfClass.drawInterval = setInterval(() => {
-                    selfClass.drawCanvas(player.songStructure, player.getCurrentTime());
-                }, 100);
-            })
-        }, 1000);
+        selfClass.props.player.refreshCurrentTrack().then((blank) => {
+            const player = selfClass.props.player;
+            clearInterval(selfClass.drawInterval);
+            selfClass.drawInterval = setInterval(() => {
+                selfClass.drawCanvas(player.songStructure, player.getCurrentTime());
+            }, 100);
+        });
 	}
 
     drawCanvas(beats, currentTime) {
