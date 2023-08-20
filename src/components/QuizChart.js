@@ -44,7 +44,7 @@ const QuizChart = ({ player }) => {
 
     useEffect(() => {
         if (canvasData.length > 0 && randomRowIndex === -1) {
-            const randomRow = 2;//Math.floor(Math.random() * rows);
+            const randomRow = Math.floor(Math.random() * rows);
             setRandomRowIndex(randomRow);
             const firstBeatOfRow = canvasData[randomRow*16];
             const lastBeatOfRow = canvasData[randomRow*16 + 16 - 1];
