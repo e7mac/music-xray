@@ -14,6 +14,10 @@ const QuizChart = ({ player }) => {
         player.seekToMeasure(measureIndex);
     };
 
+    const seekToTime = (time) => {
+        player.seekToTime(time);
+    };
+
     const getCurrentMeasure = (beats, currentTime) => {
         let currentMeasure = 0;
         for (const beat of beats) {
@@ -75,8 +79,9 @@ const QuizChart = ({ player }) => {
                     <div className="row" key={currentRowIndex}>
                         {songStructure.slice(currentRowIndex * 16, (currentRowIndex + 1) * 16).map((beat, index) => (
                             <div
-                                onClick={() => beatClicked(currentRowIndex * 16 + index)}
+                                onClick={() => seekToTime(beat.timestamp)}
                                 key={index}
+                                measure={beat.measureNumber}
                                 className="beat"
                                 style={{
                                     width: '80px',

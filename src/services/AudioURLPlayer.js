@@ -32,6 +32,11 @@ class AudioURLPlayer {
         }
     }
 
+    seekToTime(time) {
+        console.log(time, "here")
+        this.audio.currentTime = time;
+    }
+
     setLoopTime(startTime, endTime) {
         this.startTime = startTime;
         this.endTime = endTime;

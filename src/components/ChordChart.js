@@ -30,6 +30,10 @@ const ChordChart = ({ player }) => {
         };
     }, [player]);
 
+    const seekToTime = (time) => {
+        player.seekToTime(time);
+    };
+
     const getCurrentMeasure = (beats, currentTime) => {
         let currentMeasure = 0;
         for (const beat of beats) {
@@ -48,8 +52,9 @@ const ChordChart = ({ player }) => {
                 <div className="row" key={rowIndex}>
                     {songStructure.slice(rowIndex * 16, (rowIndex + 1) * 16).map((beat, index) => (
                         <div
-                            onClick={() => beatClicked(rowIndex * 16 + index)}
+                            onClick={() => seekToTime(beat.timestamp)}
                             key={index}
+                            measure={beat.measureNumber}
                             className="beat"
                             style={{
                                 width: '80px',
