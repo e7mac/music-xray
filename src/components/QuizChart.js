@@ -40,7 +40,7 @@ const QuizChart = ({ player }) => {
                     return { ...beat, currentMeasure, shouldDisplayChord };
                 });
             });
-        }, 100);
+        }, 800);
 
         return () => {
             clearInterval(drawInterval);
