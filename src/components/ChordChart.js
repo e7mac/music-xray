@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 const ChordChart = ({ player }) => {
     const [songStructure, setSongStructure] = useState([]);
-
-    const beatClicked = (index) => {
-        const measureIndex = Math.floor(index / 4) + 1;
-        player.seekToMeasure(measureIndex);
-    };
+    const [beatsPerRow, setBeatsPerRow] = useState(16);
 
     useEffect(() => {
         player.songStructure().then(beats => {
             setSongStructure(beats);
+            console.log(beats);
         });
 
         const drawInterval = setInterval(() => {
             setSongStructure(prevSongStructure => {
                 const currentTime = player.getCurrentTime();
                 const currentMeasure = getCurrentMeasure(prevSongStructure, currentTime);
+                const measuresPerRow = 4;
+                // console.log("bpm", getBeatsPerMeasure(prevSongStructure))
+                setBeatsPerRow(measuresPerRow * getBeatsPerMeasure(prevSongStructure));
                 return prevSongStructure.map((beat, index) => {
                     const prevBeat = prevSongStructure[index - 1];
                     const shouldDisplayChord = beat.chord !== prevBeat?.chord; // Check if chord is different from previous beat
@@ -44,13 +44,22 @@ const ChordChart = ({ player }) => {
         return currentMeasure;
     };
 
-    const rows = Math.ceil(songStructure.length / 16);
+    const getBeatsPerMeasure = (beats) => {
+        let prevBeatNumber = -1;
+        for (const beat of beats) {
+            if (beat.measureNumber == 2) {
+                return prevBeatNumber;
+            }
+            prevBeatNumber = beat.beatNumber;
+        }
+        return 4; // default
+    };
 
     return (
         <div className="quiz-chart">
-            {Array.from({ length: rows }).map((_, rowIndex) => (
+            {Array.from({ length: Math.ceil(songStructure.length / beatsPerRow) }).map((_, rowIndex) => (
                 <div className="row" key={rowIndex}>
-                    {songStructure.slice(rowIndex * 16, (rowIndex + 1) * 16).map((beat, index) => (
+                    {songStructure.slice(rowIndex * beatsPerRow, (rowIndex + 1) * beatsPerRow).map((beat, index) => (
                         <div
                             onClick={() => seekToTime(beat.timestamp)}
                             key={index}

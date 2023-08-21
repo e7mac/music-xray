@@ -9,11 +9,6 @@ const QuizChart = ({ player }) => {
         setShowChordDisplay(!showChordDisplay);
     };
 
-    const beatClicked = (index) => {
-        const measureIndex = Math.floor(index / 4) + 1;
-        player.seekToMeasure(measureIndex);
-    };
-
     const seekToTime = (time) => {
         player.seekToTime(time);
     };

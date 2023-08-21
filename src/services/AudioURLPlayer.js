@@ -33,7 +33,6 @@ class AudioURLPlayer {
     }
 
     seekToTime(time) {
-        console.log(time, "here")
         this.audio.currentTime = time;
     }
 
