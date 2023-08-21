@@ -23,7 +23,7 @@ class AudioPlayerControl extends Component {
             const currentTime = this.props.player.getCurrentTime();
             const duration = this.props.player.getDuration();
             this.setState({ currentTime, duration });
-        }, 1000);
+        }, 2000);
     }
 
     componentWillUnmount() {

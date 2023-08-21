@@ -31,22 +31,21 @@ function App() {
     "albums": [{
       "name": "Sun",
       "tracks": [
-        "Before Time",
-        "Creation of Earth",
+        // "Before Time", // 2/2 - seeking not working
+        // "Creation of Earth", // 3/4 - seeking not working
         "Sun",
-        "Cry",
-        "Our Destiny",
+        // "Our Destiny", // 3/4 - all broken
         "New Life",
-        "Final Frontier",
-        "Starchild",
+        // "Final Frontier", // time signature
+        // "Starchild", // seeking broken
         "Colors of Love",
-        "Cassandra",
-        "Always Mine",
-        "Dragonland",
-        "Fearless",
-        "Empire of Angels",
+        // "Cassandra", // seeking broken
+        // "Always Mine",// seeking broken
+        // "Dragonland",// seeking broken
+        // "Fearless",// seeking broken
+        // "Empire of Angels", // seeking weird
         "Two Hearts",
-        "In Paradisum",
+        // "In Paradisum",// seeking broken
       ]
     }]
   }, {
@@ -55,15 +54,14 @@ function App() {
       {
         name: 'The Unforgiving',
         tracks: [
-          'Why Not Me',
-          'Shot in the Dark',
-          'In the Middle of the Night',
-          'Faster',
+          // 'Shot in the Dark', // broken links
+          // 'In the Middle of the Night',// seeking broken
+          // 'Faster', // broken links
           'Fire and Ice',
-          'Iron',
-          'Where Is the Edge',
-          'Sinead',
-          'Lost',
+          // 'Iron', //3/4
+          // 'Where Is the Edge', // broken links
+          // 'Sinead', // broken links
+          // 'Lost', //3/4
           'Murder',
           'A Demon\'s Fate',
           'Stairway to the Skies',
@@ -71,59 +69,81 @@ function App() {
       },
     ],
   }, {
-    artist: 'Tingvall Trio',
+    artist: 'René Aubry',
     albums: [
       {
-        name: 'Dance',
+        name: 'Plaisirs d\'amour',
         tracks: [
-          "Tokyo Dance",
-          "Dance",
-          "Spanish Swing",
-          "Flotten",
-          "Riddaren",
-          "Cuban SMS",
-          "Arabic Slow Dance",
-          "Puls",
-          "Det Lilla",
-          "Ya Man",
-          "Bolero",
-          "Sommarvisan",
-          "In Memory",
-      ]
-    }]
-  }, {
-    artist: 'Nicholas Britell',
-    albums: [
-      {
-        name: 'Succession□ Season 4 (HBO Original Series Soundtrack)',
-        tracks: [
-          "A Piacere di Nuovo",
-          "Allegro Bellicoso - □Pirates□",
-          "Allegro in F Minor - Arrival at Waystar",
-          "Andante Espressivo - String Orchestra - □Number One Boy□",
-          "Elegy - Strings",
-          "End Credits - Choir and Orchestra - □With Open Eyes□",
-          "End Credits - Vivace Appassionato in G Minor",
-          "End Credits - □Action That□",
-          "Interlude - Ricercare - □On the Lot□",
-          "It's Done",
-          "Lamentoso - Clarinets, Piano, Pizzicato Strings",
-          "Lamentoso - Piano, Oboes, Strings",
-          "Lamentoso - □Needy Love Sponges□",
-          "Langsam - □We Gave It a Go□",
-          "Lento Nobile + Lento Pizzicato",
-          "Marcato e con Forza",
-          "Minuet in C Minor - English Horn - □I Need You□",
-          "Minuet in C Minor - Strings and Viola Solo",
-          "Molto Grave - Recessional",
-          "Phone Call",
-          "Piano Solo + Elegy for Orchestra - □Logan's Return□",
-          "Pianos + 808 + Beat - □Welcome Home□",
-          "Succession (Main Title Theme) - Orchestral Intro Version",
-          "Succession - Andante Risoluto",
-          "□My Dear, Dear, World of a Father□",          
-        ]
-    }]
+          'Demi Lune',
+          // 'Fil de verre', //3.4
+          'Flow',
+          // 'La grande cascade',//time sig
+          // 'La petite cascade', // broken
+          // 'Le vent',//time sig
+          // 'Lungomare', // mistakes
+          'Prima donna',
+          'Salento',
+          'Scirocco',
+          'Sirtaki à Helsinki',
+          // 'Trou de mémoire',//time sig
+          // 'Zig Zag', //time sig
+        ],
+      },
+    ],
+  // }, {
+    // artist: 'Tingvall Trio',
+    // albums: [
+    //   {
+    //     name: 'Dance',
+    //     tracks: [
+    //       "Tokyo Dance",
+  //         "Dance",
+  //         "Spanish Swing",
+  //         "Flotten",
+  //         "Riddaren",
+  //         "Cuban SMS",
+  //         "Arabic Slow Dance",
+  //         "Puls",
+  //         "Det Lilla",
+  //         "Ya Man",
+  //         "Bolero",
+  //         "Sommarvisan",
+  //         "In Memory",
+    //   ]
+    // }]
+  // }, {
+  //   artist: 'Nicholas Britell',
+  //   albums: [
+  //     {
+  //       name: 'Succession□ Season 4 (HBO Original Series Soundtrack)',
+  //       tracks: [
+  //         "A Piacere di Nuovo",
+  //         "Allegro Bellicoso - □Pirates□",
+  //         "Allegro in F Minor - Arrival at Waystar",
+  //         "Andante Espressivo - String Orchestra - □Number One Boy□",
+  //         "Elegy - Strings",
+  //         "End Credits - Choir and Orchestra - □With Open Eyes□",
+  //         "End Credits - Vivace Appassionato in G Minor",
+  //         "End Credits - □Action That□",
+  //         "Interlude - Ricercare - □On the Lot□",
+  //         "It's Done",
+  //         "Lamentoso - Clarinets, Piano, Pizzicato Strings",
+  //         "Lamentoso - Piano, Oboes, Strings",
+  //         "Lamentoso - □Needy Love Sponges□",
+  //         "Langsam - □We Gave It a Go□",
+  //         "Lento Nobile + Lento Pizzicato",
+  //         "Marcato e con Forza",
+  //         "Minuet in C Minor - English Horn - □I Need You□",
+  //         "Minuet in C Minor - Strings and Viola Solo",
+  //         "Molto Grave - Recessional",
+  //         "Phone Call",
+  //         "Piano Solo + Elegy for Orchestra - □Logan's Return□",
+  //         "Pianos + 808 + Beat - □Welcome Home□",
+  //         "Succession (Main Title Theme) - Orchestral Intro Version",
+  //         "Succession - Andante Risoluto",
+  //         "□My Dear, Dear, World of a Father□",          
+  //       ]
+    // }]
   }
 ]
 
@@ -184,9 +204,9 @@ function App() {
             </>
           : // mode quiz            
           <>
-            <p>{artist}</p>
-            <p>{album}</p>
-            <p>{track}</p>
+            <p>
+              {artist} - {album} - {track}
+            </p>
             <AudioPlayerControl
               player={audioPlayer}
             />
