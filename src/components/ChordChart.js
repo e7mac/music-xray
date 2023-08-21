@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const ChordChart = ({ player }) => {
-    const [canvasData, setCanvasData] = useState([]);
+    const [songStructure, setSongStructure] = useState([]);
 
     const beatClicked = (index) => {
         const measureIndex = Math.floor(index / 4) + 1;
@@ -10,15 +10,15 @@ const ChordChart = ({ player }) => {
 
     useEffect(() => {
         player.songStructure().then(beats => {
-            setCanvasData(beats);
+            setSongStructure(beats);
         });
 
         const drawInterval = setInterval(() => {
-            setCanvasData(prevCanvasData => {
+            setSongStructure(prevSongStructure => {
                 const currentTime = player.getCurrentTime();
-                const currentMeasure = getCurrentMeasure(prevCanvasData, currentTime);
-                return prevCanvasData.map((beat, index) => {
-                    const prevBeat = prevCanvasData[index - 1];
+                const currentMeasure = getCurrentMeasure(prevSongStructure, currentTime);
+                return prevSongStructure.map((beat, index) => {
+                    const prevBeat = prevSongStructure[index - 1];
                     const shouldDisplayChord = beat.chord !== prevBeat?.chord; // Check if chord is different from previous beat
                     return { ...beat, currentMeasure, shouldDisplayChord };
                 });
@@ -40,13 +40,13 @@ const ChordChart = ({ player }) => {
         return currentMeasure;
     };
 
-    const rows = Math.ceil(canvasData.length / 16);
+    const rows = Math.ceil(songStructure.length / 16);
 
     return (
         <div className="quiz-chart">
             {Array.from({ length: rows }).map((_, rowIndex) => (
                 <div className="row" key={rowIndex}>
-                    {canvasData.slice(rowIndex * 16, (rowIndex + 1) * 16).map((beat, index) => (
+                    {songStructure.slice(rowIndex * 16, (rowIndex + 1) * 16).map((beat, index) => (
                         <div
                             onClick={() => beatClicked(rowIndex * 16 + index)}
                             key={index}
