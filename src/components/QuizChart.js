@@ -62,9 +62,7 @@ const QuizChart = ({ player }) => {
     const visibleRows = 3; // Number of rows to show around the quiz row
 
     const startRowIndex = Math.max(0, quizRowIndex - 1);
-    const endRowIndex = Math.min(rows - 1, quizRowIndex + 1);
-
-// add html here
+    // const endRowIndex = Math.min(rows - 1, quizRowIndex + 1);
 
     return (
         <div className="quiz-chart">
@@ -95,7 +93,7 @@ const QuizChart = ({ player }) => {
                                     margin: '1px',
                                 }}
                             >
-                                {beat.shouldDisplayChord ? (currentRowIndex != quizRowIndex || showChordDisplay ? beat.chord : "??") : '.'}
+                                {beat.shouldDisplayChord ? (currentRowIndex !== quizRowIndex || showChordDisplay ? beat.chord : "??") : '.'}
                             </div>
                         ))}
                     </div>
