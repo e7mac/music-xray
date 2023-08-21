@@ -87,7 +87,7 @@ function App() {
           "Det Lilla",
           "Ya Man",
           "Bolero",
-          "Sommarvisan",,
+          "Sommarvisan",
           "In Memory",
       ]
     }]
